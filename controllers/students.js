@@ -1,4 +1,5 @@
 import Student from "../models/student.js";
+import Country from "../models/Country.js";
 
 export const getStudents = async (req, res) => {
   try {
@@ -12,7 +13,7 @@ export const getStudents = async (req, res) => {
 export const postStudent = async (req, res) => {
   try {
     const { name, first_name, email } = req.body;
-    const newStudent = new Student({name, first_name, email})
+    const newStudent = new Student({ name, first_name, email });
     const data = await Student.create({ name, first_name, email });
     res.status(201).json(data);
   } catch (error) {
@@ -51,6 +52,24 @@ export const putManyStudents = async (req, res) => {
     let update = { first_name: first_name };
 
     const data = await Student.updateMany({ first_name: old }, update);
+    res.status(200).json(data);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+};
+
+export const putStudentCountry = async (req, res) => {
+  const { id, code } = req.params;
+  const codeCap = code.toUpperCase();
+  console.log(id, code, codeCap);
+
+  try {
+    const country = await Country.findOne({ alpha2Code: codeCap });
+    
+    console.log(country)
+    const update = { country: country._id };
+    console.log(update)
+    const data = await Student.findByIdAndUpdate(id, update, { new: true });
     res.status(200).json(data);
   } catch (error) {
     res.sendStatus(500);

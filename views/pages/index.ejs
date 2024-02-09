@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container">
+    <main>
+      <div class="jumbotron">
+        <h1>Travel Wish List</h1>
+        <h2>Countries I want to visit</h2>
+
+        <section class="card-container">
+          <% countriesNotVisited.map((country) => { %>
+          <div class="card">
+            <h3><%= country.name %></h3>
+            <p><%= country.alpha2Code %> | <%= country.alpha3Code %></p>
+            <form action="/countries/delete" method="POST">
+              <input type="hidden" name="_method" value="DELETE" />
+              <input type="hidden" name="id" value=<%= country._id %> />
+              <button type="submit" value="Submit">Mark as visited</button>
+            </form>
+          </div>
+          <% }) %>
+        </section>
+
+        <h2>Countries I have visited</h2>
+        <section class="card-container">
+          <% countriesVisited.map((country) => { %>
+          <div class="card">
+            <h3><%= country.name %></h3>
+            <p><%= country.alpha2Code %> | <%= country.alpha3Code %></p>
+            <h4>Students I have met</h4>
+            <div class="students">
+              <% students.map(student => { %> <% if (student.country.toString()
+              === country._id.toString()) { %>
+              <p><%= student.first_name %> <%= student.name %></p>
+
+              <% }}) %>
+            </div>
+          </div>
+          <% }) %>
+        </section>
+
+        <h2>Add new country</h2>
+        <form action="/countries" method="POST">
+          <label for="name"
+            >Country Name: <input type="text" name="name" id="name"
+          /></label>
+          <label for="alpha2Code"
+            >Alpha-2 Code: <input type="text" name="alpha2Code" id="alpha2Code"
+          /></label>
+          <label for="alpha3Code"
+            >Alpha-3 Code: <input type="text" name="alpha3Code" id="alpha3Code"
+          /></label>
+          <button type="submit" value="Submit">Submit</button>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Schema } from "mongoose";
 
 const StudentSchema = new mongoose.Schema({
   name: { required: true, type: String },
@@ -13,6 +14,7 @@ const StudentSchema = new mongoose.Schema({
         message: "not a valid email!"
       },
   },
+  country: { type: Schema.Types.ObjectId, ref: 'Country' }
 });
 
 const Student = mongoose.model("Student", StudentSchema);
